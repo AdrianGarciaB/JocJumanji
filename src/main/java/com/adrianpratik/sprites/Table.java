@@ -13,11 +13,17 @@ public class Table {
     public Table(String URI){
         tableSprite = new Image(URI);
         cardList = new ArrayList<>();
-        cardList.add(new Image("images/1.png"));
+        cardList.add(new Image("images/back1.png"));
     }
 
     public void draw(){
         MainWindow.getGraphicsContext().drawImage(tableSprite, 0,0, MainWindow.width, MainWindow.height);
-        MainWindow.getGraphicsContext().drawImage(cardList.get(0), 1286, 307, 48, 71);
+
+        // Posicion cartas jugador 5
+        MainWindow.getGraphicsContext().drawImage(cardList.get(0), 1316*MainWindow.diferenceWidth, 309*MainWindow.diferenceHeight, 33*MainWindow.diferenceWidth, 55*MainWindow.diferenceHeight);
+        MainWindow.getGraphicsContext().drawImage(cardList.get(0), 1364*MainWindow.diferenceWidth, 309*MainWindow.diferenceHeight, 33*MainWindow.diferenceWidth, 55*MainWindow.diferenceHeight);
+        MainWindow.getGraphicsContext().drawImage(cardList.get(0), 1316*MainWindow.diferenceWidth, 376*MainWindow.diferenceHeight, 33*MainWindow.diferenceWidth, 55*MainWindow.diferenceHeight);
+        MainWindow.getGraphicsContext().drawImage(cardList.get(0), 1364*MainWindow.diferenceWidth, 376*MainWindow.diferenceHeight, 33*MainWindow.diferenceWidth, 55*MainWindow.diferenceHeight);
+
     }
 }

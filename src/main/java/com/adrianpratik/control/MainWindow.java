@@ -25,6 +25,8 @@ public class MainWindow implements Initializable {
     public static final double baseHeight = 1080;
     public static double width = baseWidth;
     public static double height = baseHeight;
+    public static double diferenceWidth = 1f;
+    public static double diferenceHeight = 1f;
 
     private Scene scene;
     private static GraphicsContext gc;
@@ -58,11 +60,15 @@ public class MainWindow implements Initializable {
     public void setWidth(double width) {
         mainCanvas.setWidth(width);
         MainWindow.width = width;
+        MainWindow.diferenceWidth = width / baseWidth;
+
+
     }
 
     public void setHeight(double height) {
         mainCanvas.setHeight(height);
         MainWindow.height = height;
+        MainWindow.diferenceHeight = height / baseHeight;
     }
 
     public void start(){

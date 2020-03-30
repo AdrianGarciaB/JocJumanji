@@ -1,4 +1,5 @@
 package com.adrianpratik.sprites;
 
-public class Card {
+public class Card{
+
 }
