@@ -2,7 +2,6 @@ package com.adrianpratik.sprites;
 
 
 import com.adrianpratik.control.MainWindow;
-import com.sun.xml.internal.ws.api.message.ExceptionHasMessage;
 import javafx.geometry.Point2D;
 import javafx.scene.image.Image;
 
