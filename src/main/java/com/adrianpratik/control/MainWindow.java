@@ -9,10 +9,12 @@ import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
+import javafx.geometry.Point2D;
 import javafx.scene.Scene;
 import javafx.scene.canvas.Canvas;
 import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.image.Image;
+import javafx.scene.input.MouseEvent;
 import javafx.scene.paint.Color;
 import javafx.util.Duration;
 
@@ -55,6 +57,13 @@ public class MainWindow implements Initializable {
 
     public void setScene(Scene sc) {
         scene = sc;
+        scene.setOnMouseClicked(new EventHandler<MouseEvent>() {
+            @Override
+            public void handle(MouseEvent mouseEvent) {
+                Point2D point = new Point2D(mouseEvent.getX(),mouseEvent.getY());
+                System.out.println("click");
+            }
+        });
     }
 
     public void setWidth(double width) {
