@@ -1,7 +1,5 @@
 package com.adrianpratik.control;
 
-import com.adrianpratik.sprites.Box;
-import com.adrianpratik.sprites.Card;
 import com.adrianpratik.sprites.Table;
 import javafx.animation.KeyFrame;
 import javafx.animation.Timeline;
@@ -13,9 +11,7 @@ import javafx.geometry.Point2D;
 import javafx.scene.Scene;
 import javafx.scene.canvas.Canvas;
 import javafx.scene.canvas.GraphicsContext;
-import javafx.scene.image.Image;
 import javafx.scene.input.MouseEvent;
-import javafx.scene.paint.Color;
 import javafx.util.Duration;
 
 import java.net.URL;
@@ -29,6 +25,7 @@ public class MainWindow implements Initializable {
     public static double height = baseHeight;
     public static double diferenceWidth = 1f;
     public static double diferenceHeight = 1f;
+    public static final String imageURI = "images/";
 
     private Scene scene;
     private static GraphicsContext gc;

@@ -12,14 +12,16 @@ import java.util.List;
 public class Table {
     private Image tableSprite;
     private List<Image> cardList;
+    private Card card;
 
     public Table(String URI){
         tableSprite = new Image(URI);
         cardList = new ArrayList<>();
-        cardList.add(new Image("images/back1.png"));
-        cardList.add(new Image("images/back1.png"));
-        cardList.add(new Image("images/back1.png"));
-        cardList.add(new Image("images/back1.png"));
+        cardList.add(new Image("images/back.png"));
+        cardList.add(new Image("images/back.png"));
+        cardList.add(new Image("images/back.png"));
+        cardList.add(new Image("images/back.png"));
+        card = new Card(0,0, Card.getRandomType(), 1, 0);
 
     }
 
@@ -57,7 +59,9 @@ public class Table {
         MainWindow.getGraphicsContext().drawImage(cardList.get(0), 1364*MainWindow.diferenceWidth, 683*MainWindow.diferenceHeight, 33*MainWindow.diferenceWidth, 55*MainWindow.diferenceHeight);
         MainWindow.getGraphicsContext().drawImage(cardList.get(0), 1364*MainWindow.diferenceWidth, 750*MainWindow.diferenceHeight, 33*MainWindow.diferenceWidth, 55*MainWindow.diferenceHeight);
 
+
         // Player 3
+        /*
         MainWindow.getGraphicsContext().drawImage(getRotatedImage(cardList.get(0), 90, 33*MainWindow.diferenceWidth, 55*MainWindow.diferenceHeight), 287*MainWindow.diferenceWidth, 517*MainWindow.diferenceHeight);
         MainWindow.getGraphicsContext().drawImage(getRotatedImage(cardList.get(0), 90, 33*MainWindow.diferenceWidth, 55*MainWindow.diferenceHeight), 287*MainWindow.diferenceWidth, 565*MainWindow.diferenceHeight);
         MainWindow.getGraphicsContext().drawImage(getRotatedImage(cardList.get(0), 90, 33*MainWindow.diferenceWidth, 55*MainWindow.diferenceHeight), 354*MainWindow.diferenceWidth, 517*MainWindow.diferenceHeight);
@@ -74,18 +78,13 @@ public class Table {
         MainWindow.getGraphicsContext().drawImage(cardList.get(0), 903*MainWindow.diferenceWidth, 513*MainWindow.diferenceHeight, 33*MainWindow.diferenceWidth, 55*MainWindow.diferenceHeight);
 
 
+         */
+
         // One Cards See
         MainWindow.getGraphicsContext().drawImage(cardList.get(0), 996*MainWindow.diferenceWidth, 513*MainWindow.diferenceHeight, 33*MainWindow.diferenceWidth, 55*MainWindow.diferenceHeight);
     }
 
-    private Image getRotatedImage(Image image, int position, double width, double height){
-        // Imagen rotada
-        ImageView iv = new ImageView(image);
-        iv.setRotate(position);
-        SnapshotParameters params = new SnapshotParameters();
-        params.setFill(Color.TRANSPARENT);
-        iv.setFitWidth(width);
-        iv.setFitHeight(height);
-        return iv.snapshot(params, null);
-    }
+
+
+
 }
