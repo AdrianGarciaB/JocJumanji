@@ -21,15 +21,14 @@ public class Table {
         cardList.add(new Image("images/back.png"));
         cardList.add(new Image("images/back.png"));
         cardList.add(new Image("images/back.png"));
-        card = new Card(0,0, Card.getRandomType(), 1, 0);
+        card = new Card(1316,309, Card.Type.Club, 2);
 
     }
 
     public void draw(){
         MainWindow.getGraphicsContext().drawImage(tableSprite, 0,0, MainWindow.width, MainWindow.height);
-
         // Posicion cartas jugador 5
-        MainWindow.getGraphicsContext().drawImage(cardList.get(0), 1316*MainWindow.diferenceWidth, 309*MainWindow.diferenceHeight, 33*MainWindow.diferenceWidth, 55*MainWindow.diferenceHeight);
+        //MainWindow.getGraphicsContext().drawImage(cardList.get(0), 1316*MainWindow.diferenceWidth, 309*MainWindow.diferenceHeight, 33*MainWindow.diferenceWidth, 55*MainWindow.diferenceHeight);
         MainWindow.getGraphicsContext().drawImage(cardList.get(1), 1364*MainWindow.diferenceWidth, 309*MainWindow.diferenceHeight, 33*MainWindow.diferenceWidth, 55*MainWindow.diferenceHeight);
         MainWindow.getGraphicsContext().drawImage(cardList.get(2), 1316*MainWindow.diferenceWidth, 376*MainWindow.diferenceHeight, 33*MainWindow.diferenceWidth, 55*MainWindow.diferenceHeight);
         MainWindow.getGraphicsContext().drawImage(cardList.get(3), 1364*MainWindow.diferenceWidth, 376*MainWindow.diferenceHeight, 33*MainWindow.diferenceWidth, 55*MainWindow.diferenceHeight);
@@ -82,6 +81,8 @@ public class Table {
 
         // One Cards See
         MainWindow.getGraphicsContext().drawImage(cardList.get(0), 996*MainWindow.diferenceWidth, 513*MainWindow.diferenceHeight, 33*MainWindow.diferenceWidth, 55*MainWindow.diferenceHeight);
+        card.draw();
+
     }
 
 

@@ -9,23 +9,23 @@ import javafx.scene.image.ImageView;
 import javafx.scene.paint.Color;
 
 public class Card{
+    private static final int cardWidthSize = 33;
+    private static final int cardHeightSize = 55;
     private Type type;
-    private enum Type{Club, Diamond, Heart, Spade}
+    public enum Type{Club, Diamond, Heart, Spade}
     private int cardNumber;
     private double x, y;
     private Image sprite;
     private boolean hide;
     private int rotation;
 
-    public Card(double coordX, double coordY, Type cardType, int cardNumber, int rotation){
+    public Card(double coordX, double coordY, Type cardType, int cardNumber){
         type = cardType;
         this.x = coordX;
         this.y = coordY;
         this.cardNumber = cardNumber;
-        this.rotation = rotation;
         this.sprite = new Image(MainWindow.imageURI +cardNumber+"-"+type+".png");
-
-        if (rotation != 0) this.sprite = getRotatedImage(sprite, this.rotation, this.sprite.getWidth(), this.sprite.getHeight());
+        fixImage();
 
 
         //TODO select correct sprite
@@ -42,21 +42,31 @@ public class Card{
         return null;
     }
 
-    public void draw(int X, int Y){
+    public void draw(){
         if (hide) return;
-        MainWindow.getGraphicsContext().drawImage(sprite, getX()*MainWindow.diferenceWidth, getY()*MainWindow.diferenceHeight, 33*MainWindow.diferenceWidth, 55*MainWindow.diferenceHeight);
+        // 33, 55
+        MainWindow.getGraphicsContext().drawImage(sprite, getX()*MainWindow.diferenceWidth, getY()*MainWindow.diferenceHeight, cardWidthSize*MainWindow.diferenceWidth, cardHeightSize*MainWindow.diferenceHeight);
+
     }
 
+
     private Image getRotatedImage(Image image, int rotation, double width, double height){
+        //TODO faltaria rotaciones de imagen.
         // Imagen rotada
         ImageView iv = new ImageView(image);
         iv.setRotate(rotation);
         SnapshotParameters params = new SnapshotParameters();
         params.setFill(Color.TRANSPARENT);
-        iv.setFitWidth(width);
-        iv.setFitHeight(height);
         return iv.snapshot(params, null);
     }
+
+    private void fixImage(){
+        ImageView tmp = new ImageView(this.sprite);
+        tmp.setFitWidth(cardWidthSize*MainWindow.diferenceWidth);
+        tmp.setFitHeight(cardHeightSize*MainWindow.diferenceHeight);
+        this.sprite = tmp.getImage();
+    }
+
 
     public Type getType() {
         return type;
