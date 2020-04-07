@@ -1,15 +1,18 @@
 package com.adrianpratik;
 
 import com.adrianpratik.control.MainWindow;
-import com.adrianpratik.sprites.Menu;
+import com.adrianpratik.sprites.Player;
 import javafx.application.Application;
 import javafx.beans.InvalidationListener;
+import javafx.event.EventHandler;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
+import javafx.scene.input.MouseEvent;
 import javafx.scene.media.Media;
 import javafx.scene.media.MediaPlayer;
 import javafx.stage.Stage;
+import javafx.util.Duration;
 
 import java.io.File;
 import java.io.IOException;
@@ -31,9 +34,8 @@ public class Main extends Application {
             e.printStackTrace();
         }
 
-        Menu menu = new Menu();
-        menu.getSceneMenu().getChildren().add(root);
-        Scene sc = new Scene(menu.getSceneMenu(), 1920, 1080);
+
+        Scene sc = new Scene(root, 1920, 1080);
         // Musica del inicio
 
 
@@ -52,14 +54,25 @@ public class Main extends Application {
         sc.heightProperty().addListener(heightListener);
         window.start();
 
+        //OnClicked
+        Media songclik = new Media(new File("src/main/resources/audio/click.mp3").toURI().toString());
+        MediaPlayer mediaPlayerClick = new MediaPlayer(songclik);
+        mediaPlayerClick.setVolume(100);
+        mediaPlayerClick.play();
 
-//        String ssound = "audio/musicaFondo.mp3";
-//        Media sound = new Media(ssound);
-//        MediaPlayer mediaPlayerInicio = new MediaPlayer(sound);
-//        mediaPlayerInicio.setAutoPlay(true);
-//        mediaPlayerInicio.setVolume(50);
-//        mediaPlayerInicio.setCycleCount(MediaPlayer.INDEFINITE);
-//        mediaPlayerInicio.play();
+        sc.setOnMouseClicked(new EventHandler<MouseEvent>() {
+            @Override
+            public void handle(MouseEvent mouseEvent) {
+                System.out.println("Playing!");
+                mediaPlayerClick.stop();
+                mediaPlayerClick.setStartTime(Duration.ZERO);
+                mediaPlayerClick.play();
+            }
+        });
+
+        // Sonido de fondo
+        Player sonido = new Player();
+        sonido.playMusic();
 
         primaryStage.setScene(sc);
         primaryStage.setTitle("Jumanji :)");

@@ -1,23 +1,24 @@
 package com.adrianpratik.sprites;
 
 import com.adrianpratik.control.MainWindow;
+import javafx.beans.property.BooleanProperty;
+import javafx.beans.property.SimpleBooleanProperty;
 import javafx.scene.Group;
 import javafx.scene.Node;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
-import javafx.scene.control.Button;
-import javafx.scene.media.Media;
-import javafx.scene.media.MediaPlayer;
+import javafx.scene.media.AudioClip;
 
 import java.io.File;
-
 
 public class Menu extends Node {
     private ImageView backgroundImage;
     private Group groupMenu;
     private ImageView play, titleGame, exit;
-    private MediaPlayer mediaPlayerInicio;
-   // private Button exit;
+
+    private AudioClip kick;
+    private BooleanProperty onClik = new SimpleBooleanProperty();
+
 
 
     public Menu() {
@@ -35,6 +36,8 @@ public class Menu extends Node {
 
 
         //Opciones
+
+        // Opción de Play
         play = new ImageView("images/option_play_menu.gif");
         play.setStyle("-fx-background-color: transparent; ");
         play.setOnMouseEntered(event -> play.setImage(new Image("images/play_mouse_on.gif")));
@@ -42,6 +45,7 @@ public class Menu extends Node {
         play.setLayoutX(525);
         play.setLayoutY(300);
 
+        // Opcion de Exit
         exit = new ImageView("images/option_exit_menu.gif");
         exit.setStyle("-fx-background-color: transparent; ");
        // exit.set(event -> System.exit(0));
@@ -49,15 +53,6 @@ public class Menu extends Node {
         exit.setOnMouseExited(event -> exit.setImage(new Image("images/quit_hover.png")));
         exit.setLayoutX(465);
         exit.setLayoutY(450);
-
-//        btnExit.setGraphic(new ImageView("images/option_exit_menu.gif"));
-//        btnExit.setStyle("-fx-background-color: transparent; ");
-//        btnExit.setOnAction(event -> System.exit(0));
-//        btnExit.setOnMouseEntered(event -> btnExit.setGraphic(new ImageView("images/quit_hover.png")));
-//        btnExit.setOnMouseExited(event -> btnExit.setGraphic(new ImageView("images/quit_hover.png")));
-//        btnExit.setLayoutX(465);
-//        btnExit.setLayoutY(450);
-
 
         groupMenu = new Group();
         groupMenu.getChildren().addAll(play, exit, titleGame);
