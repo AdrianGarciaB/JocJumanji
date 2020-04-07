@@ -1,5 +1,6 @@
 package com.adrianpratik.control;
 
+import com.adrianpratik.sprites.Menu;
 import com.adrianpratik.sprites.Table;
 import javafx.animation.KeyFrame;
 import javafx.animation.Timeline;
@@ -11,11 +12,14 @@ import javafx.geometry.Point2D;
 import javafx.scene.Scene;
 import javafx.scene.canvas.Canvas;
 import javafx.scene.canvas.GraphicsContext;
+import javafx.scene.control.MenuButton;
+import javafx.scene.image.Image;
+import javafx.scene.image.ImageView;
 import javafx.scene.input.MouseEvent;
+import javafx.scene.layout.AnchorPane;
 import javafx.util.Duration;
 
 import java.net.URL;
-import java.util.List;
 import java.util.ResourceBundle;
 
 public class MainWindow implements Initializable {
@@ -29,24 +33,33 @@ public class MainWindow implements Initializable {
 
     private Scene scene;
     private static GraphicsContext gc;
-
+    private Menu mainMenu;
+    private boolean isInMenu = true;
     private Table table;
 
     @FXML
     Canvas mainCanvas;
 
+    @FXML
+    AnchorPane anchorPane;
+
+
     Timeline timeline = new Timeline(new KeyFrame(Duration.seconds(0.0017), new EventHandler<ActionEvent>(){
         @Override
         public void handle(ActionEvent event) {
             gc.clearRect(0, 0,  width, height);
-            table.draw();
+            if (isInMenu) mainMenu.draw();
+            else table.draw();
+
         }
     })
     );
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
+
         gc = mainCanvas.getGraphicsContext2D();
+        mainMenu = new Menu();
         timeline.setCycleCount(Timeline.INDEFINITE);
         table = new Table("images/table.png");
 
@@ -84,6 +97,7 @@ public class MainWindow implements Initializable {
     public Canvas getMainCanvas() {
         return mainCanvas;
     }
+
 
     public static GraphicsContext getGraphicsContext() {
         return gc;
