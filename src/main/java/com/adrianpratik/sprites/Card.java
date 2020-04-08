@@ -10,7 +10,7 @@ import javafx.scene.paint.Color;
 
 public class Card{
     private static final int cardWidthSize = 33;
-    private static final int cardHeightSize = 55;
+    private static final int cardHeightSize = 48;
     private Type type;
     public enum Type{Club, Diamond, Heart, Spade}
     private int cardNumber;
@@ -27,8 +27,6 @@ public class Card{
         this.sprite = new Image(MainWindow.imageURI +cardNumber+"-"+type+".png");
         fixImage();
 
-
-        //TODO select correct sprite
     }
 
     public static Type getRandomType(){
@@ -51,8 +49,6 @@ public class Card{
 
 
     private Image getRotatedImage(Image image, int rotation, double width, double height){
-        //TODO faltaria rotaciones de imagen.
-        // Imagen rotada
         ImageView iv = new ImageView(image);
         iv.setRotate(rotation);
         SnapshotParameters params = new SnapshotParameters();

@@ -54,21 +54,6 @@ public class Main extends Application {
         sc.heightProperty().addListener(heightListener);
         window.start();
 
-        //OnClicked
-        Media songclik = new Media(new File("src/main/resources/audio/click.mp3").toURI().toString());
-        MediaPlayer mediaPlayerClick = new MediaPlayer(songclik);
-        mediaPlayerClick.setVolume(100);
-        mediaPlayerClick.play();
-
-        sc.setOnMouseClicked(new EventHandler<MouseEvent>() {
-            @Override
-            public void handle(MouseEvent mouseEvent) {
-                System.out.println("Playing!");
-                mediaPlayerClick.stop();
-                mediaPlayerClick.setStartTime(Duration.ZERO);
-                mediaPlayerClick.play();
-            }
-        });
 
         // Sonido de fondo
         Player sonido = new Player();

@@ -3,6 +3,8 @@ package com.adrianpratik.sprites;
 import com.adrianpratik.control.MainWindow;
 import javafx.beans.property.BooleanProperty;
 import javafx.beans.property.SimpleBooleanProperty;
+import javafx.geometry.Point2D;
+import javafx.geometry.Rectangle2D;
 import javafx.scene.Group;
 import javafx.scene.Node;
 import javafx.scene.image.Image;
@@ -11,7 +13,7 @@ import javafx.scene.media.AudioClip;
 
 import java.io.File;
 
-public class Menu extends Node {
+public class Menu {
     private ImageView backgroundImage;
     private Group groupMenu;
     private ImageView play, titleGame, exit;
@@ -69,10 +71,27 @@ public class Menu extends Node {
         MainWindow.getGraphicsContext().drawImage(titleGame.getImage(), 700*MainWindow.diferenceWidth, 300*MainWindow.diferenceHeight, 500*MainWindow.diferenceWidth, 100*MainWindow.diferenceHeight);
 
         // Boton jugar
-        MainWindow.getGraphicsContext().drawImage(play.getImage(), 900*MainWindow.diferenceWidth, 500*MainWindow.diferenceHeight);
+        MainWindow.getGraphicsContext().drawImage(play.getImage(), 900*MainWindow.diferenceWidth, 500*MainWindow.diferenceHeight, 102*MainWindow.diferenceWidth, 60*MainWindow.diferenceHeight);
 
         // Boton exit
-        MainWindow.getGraphicsContext().drawImage(exit.getImage(), 900*MainWindow.diferenceWidth, 600*MainWindow.diferenceHeight);
+        MainWindow.getGraphicsContext().drawImage(exit.getImage(), 900*MainWindow.diferenceWidth, 600*MainWindow.diferenceHeight, 103*MainWindow.diferenceWidth, 49*MainWindow.diferenceHeight);
 
+    }
+
+    public boolean playButtonClicked(Point2D p){
+        System.out.println(p.getX() + ":" + p.getY());
+        return getPlayBoundary().contains(p);
+    }
+
+    public static Rectangle2D getPlayBoundary() {
+        return new Rectangle2D(900*MainWindow.diferenceWidth, 500*MainWindow.diferenceHeight, 102*MainWindow.diferenceWidth, 60*MainWindow.diferenceHeight);
+    }
+
+    public boolean exitButtonClicked(Point2D p) {
+        return getExitBoundary().contains(p);
+    }
+
+    public static Rectangle2D getExitBoundary() {
+        return new Rectangle2D(900*MainWindow.diferenceWidth, 600*MainWindow.diferenceHeight, 102*MainWindow.diferenceWidth, 60*MainWindow.diferenceHeight);
     }
 }
