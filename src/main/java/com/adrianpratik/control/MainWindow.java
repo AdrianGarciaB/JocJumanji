@@ -80,12 +80,14 @@ public class MainWindow implements Initializable {
                 Point2D point = new Point2D(mouseEvent.getX(),mouseEvent.getY());
                 mediaPlayerClick.stop();
                 mediaPlayerClick.play();
-                if (mainMenu.playButtonClicked(point)) {
-                    isInMenu = false;
-                }
-                else if (mainMenu.exitButtonClicked(point)){
-                    Platform.exit();
-                    System.exit(0);
+                if (isInMenu){
+                    if (mainMenu.playButtonClicked(point)) {
+                        isInMenu = false;
+                    }
+                    else if (mainMenu.exitButtonClicked(point)){
+                        Platform.exit();
+                        System.exit(0);
+                    }
                 }
             }
         });
