@@ -1,20 +1,14 @@
 package com.adrianpratik;
 
 import com.adrianpratik.control.MainWindow;
-import com.adrianpratik.sprites.Player;
+import com.adrianpratik.sprites.Music;
 import javafx.application.Application;
 import javafx.beans.InvalidationListener;
-import javafx.event.EventHandler;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
-import javafx.scene.input.MouseEvent;
-import javafx.scene.media.Media;
-import javafx.scene.media.MediaPlayer;
 import javafx.stage.Stage;
-import javafx.util.Duration;
 
-import java.io.File;
 import java.io.IOException;
 
 public class Main extends Application {
@@ -56,7 +50,7 @@ public class Main extends Application {
 
 
         // Sonido de fondo
-        Player sonido = new Player();
+        Music sonido = new Music();
         sonido.playMusic();
 
         primaryStage.setScene(sc);

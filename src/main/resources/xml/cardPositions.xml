@@ -1,0 +1,100 @@
+<cardsPosition>
+    <player id="0">
+        <card position="0">
+            <X>916</X>
+            <Y>678</Y>
+        </card>
+        <card position="1">
+            <X>963</X>
+            <Y>678</Y>
+        </card>
+        <card position="2">
+            <X>916</X>
+            <Y>745</Y>
+        </card>
+        <card position="3">
+            <X>963</X>
+            <Y>745</Y>
+        </card>
+    </player>
+    <player id="1">
+        <card position="0">
+            <X>1311</X>
+            <Y>678</Y>
+        </card>
+        <card position="1">
+            <X>1359</X>
+            <Y>678</Y>
+        </card>
+        <card position="2">
+            <X>1311</X>
+            <Y>745</Y>
+        </card>
+        <card position="3">
+            <X>1359</X>
+            <Y>745</Y>
+        </card>
+    </player>
+    <player id="2">
+        <card position="0">
+            <X>1311</X>
+            <Y>304</Y>
+        </card>
+        <card position="1">
+            <X>1359</X>
+            <Y>304</Y>
+        </card>
+        <card position="2">
+            <X>1311</X>
+            <Y>371</Y>
+        </card>
+        <card position="3">
+            <X>1359</X>
+            <Y>371</Y>
+        </card>
+    </player>
+    <player id="3">
+        <card position="0">
+            <X>518</X>
+            <Y>304</Y>
+        </card>
+        <card position="1">
+            <X>566</X>
+            <Y>304</Y>
+        </card>
+        <card position="2">
+            <X>518</X>
+            <Y>371</Y>
+        </card>
+        <card position="3">
+            <X>566</X>
+            <Y>371</Y>
+        </card>
+    </player>
+    <player id="4">
+        <card position="0">
+            <X>518</X>
+            <Y>678</Y>
+        </card>
+        <card position="1">
+            <X>566</X>
+            <Y>678</Y>
+        </card>
+        <card position="2">
+            <X>518</X>
+            <Y>745</Y>
+        </card>
+        <card position="3">
+            <X>566</X>
+            <Y>745</Y>
+        </card>
+    </player>
+    <deck>
+        <X>991</X>
+        <Y>508</Y>
+    </deck>
+    <discardDeck>
+        <X>898</X>
+        <Y>508</Y>
+    </discardDeck>
+</cardsPosition>

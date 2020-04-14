@@ -3,6 +3,7 @@ package com.adrianpratik.sprites;
 import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.paint.Color;
 
+@Deprecated
 public class Box {
     public static void drawLimits(GraphicsContext gc, double x, double y, double width, double height, int size){
         gc.setFill(Color.RED);
