@@ -24,8 +24,8 @@ import javax.xml.bind.annotation.XmlType;
  *   &lt;complexContent>
  *     &lt;restriction base="{http://www.w3.org/2001/XMLSchema}anyType">
  *       &lt;sequence>
- *         &lt;element name="X" type="{http://www.w3.org/2001/XMLSchema}byte"/>
- *         &lt;element name="Y" type="{http://www.w3.org/2001/XMLSchema}byte"/>
+ *         &lt;element name="X" type="{http://www.w3.org/2001/XMLSchema}int"/>
+ *         &lt;element name="Y" type="{http://www.w3.org/2001/XMLSchema}int"/>
  *       &lt;/sequence>
  *     &lt;/restriction>
  *   &lt;/complexContent>
@@ -42,15 +42,15 @@ import javax.xml.bind.annotation.XmlType;
 public class DeckType {
 
     @XmlElement(name = "X")
-    protected byte x;
+    protected int x;
     @XmlElement(name = "Y")
-    protected byte y;
+    protected int y;
 
     /**
      * Gets the value of the x property.
      * 
      */
-    public byte getX() {
+    public int getX() {
         return x;
     }
 
@@ -58,7 +58,7 @@ public class DeckType {
      * Sets the value of the x property.
      * 
      */
-    public void setX(byte value) {
+    public void setX(int value) {
         this.x = value;
     }
 
@@ -66,7 +66,7 @@ public class DeckType {
      * Gets the value of the y property.
      * 
      */
-    public byte getY() {
+    public int getY() {
         return y;
     }
 
@@ -74,7 +74,7 @@ public class DeckType {
      * Sets the value of the y property.
      * 
      */
-    public void setY(byte value) {
+    public void setY(int value) {
         this.y = value;
     }
 

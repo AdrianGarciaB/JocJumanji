@@ -1,6 +1,6 @@
 package com.adrianpratik;
 
-import com.adrianpratik.control.MainWindow;
+import com.adrianpratik.control.GameController;
 import com.adrianpratik.sprites.Music;
 import javafx.application.Application;
 import javafx.beans.InvalidationListener;
@@ -33,7 +33,7 @@ public class Main extends Application {
         // Musica del inicio
 
 
-        MainWindow window = loader.getController();
+        GameController window = loader.getController();
         window.setScene(sc);
         window.setWidth(sc.getWidth());
         window.setHeight(sc.getHeight());

@@ -1,18 +1,16 @@
 package com.adrianpratik.sprites;
 
 
-import com.adrianpratik.control.MainWindow;
+import com.adrianpratik.control.Deck;
+import com.adrianpratik.control.GameController;
 import javafx.geometry.Point2D;
 import javafx.geometry.Rectangle2D;
-import javafx.scene.SnapshotParameters;
 import javafx.scene.image.Image;
-import javafx.scene.image.ImageView;
-import javafx.scene.paint.Color;
 
 public class Card{
     public static final int cardWidthSize = 43;
     public static final int cardHeightSize = 65;
-    public static final Image cardFlipped = new Image(MainWindow.imageURI +"back.png");
+    public static final Image cardFlipped = new Image(GameController.imageURI +"back.png");
     private Type type;
     public enum Type{Club, Diamond, Heart, Spade}
     private int cardNumber;
@@ -21,14 +19,15 @@ public class Card{
     private boolean flipped;
     private boolean hide;
     private int cardPosition;
+
     public Card(int x, int y, Type cardType, int cardNumber, int cardPosition){
         type = cardType;
         this.x = x;
         this.y = y;
         this.cardNumber = cardNumber;
-        this.sprite = new Image(MainWindow.imageURI +cardNumber+"-"+type+".png");
+        this.sprite = new Image(GameController.imageURI +cardNumber+"-"+type+".png");
         this.cardPosition = cardPosition;
-        flipped = true;
+        flipped = false;
     }
 
     public static Type getRandomType(){
@@ -54,20 +53,22 @@ public class Card{
 
     public void draw(){
         if (hide) return;
-        if (flipped) MainWindow.getGraphicsContext().drawImage(cardFlipped, getX()*MainWindow.diferenceWidth, getY()*MainWindow.diferenceHeight, cardWidthSize*MainWindow.diferenceWidth, cardHeightSize*MainWindow.diferenceHeight);
-        else MainWindow.getGraphicsContext().drawImage(sprite, getX()*MainWindow.diferenceWidth, getY()*MainWindow.diferenceHeight, cardWidthSize*MainWindow.diferenceWidth, cardHeightSize*MainWindow.diferenceHeight);
+        if (flipped) GameController.getGraphicsContext().drawImage(cardFlipped, getX()* GameController.diferenceWidth, getY()* GameController.diferenceHeight, cardWidthSize* GameController.diferenceWidth, cardHeightSize* GameController.diferenceHeight);
+        else GameController.getGraphicsContext().drawImage(sprite, getX()* GameController.diferenceWidth, getY()* GameController.diferenceHeight, cardWidthSize* GameController.diferenceWidth, cardHeightSize* GameController.diferenceHeight);
     }
 
     public void draw(double X, double Y){
-        MainWindow.getGraphicsContext().drawImage(sprite, X, Y, cardWidthSize*MainWindow.diferenceWidth, cardHeightSize*MainWindow.diferenceHeight);
+        if (flipped) GameController.getGraphicsContext().drawImage(cardFlipped, X, Y, cardWidthSize* GameController.diferenceWidth, cardHeightSize* GameController.diferenceHeight);
+        else GameController.getGraphicsContext().drawImage(sprite, X, Y, cardWidthSize* GameController.diferenceWidth, cardHeightSize* GameController.diferenceHeight);
     }
 
     public boolean isCardClicked(Point2D p){
+        if (x == Deck.getDiscardDeckPoints().getX() && y == Deck.getDiscardDeckPoints().getY()) return false;
         return getCardBoundary().contains(p);
     }
 
     public Rectangle2D getCardBoundary() {
-        return new Rectangle2D(x*MainWindow.diferenceWidth, y*MainWindow.diferenceHeight, cardWidthSize*MainWindow.diferenceWidth, cardHeightSize*MainWindow.diferenceHeight);
+        return new Rectangle2D(x* GameController.diferenceWidth, y* GameController.diferenceHeight, cardWidthSize* GameController.diferenceWidth, cardHeightSize* GameController.diferenceHeight);
     }
 
     public Point2D getCardCoordsByPlayer(int playerId, int position){
@@ -138,4 +139,11 @@ public class Card{
     public void setFlipped(boolean flipped) {
         this.flipped = flipped;
     }
+
+    public void resetPositions(){
+        x = -100;
+        y = -100;
+    }
+
+
 }

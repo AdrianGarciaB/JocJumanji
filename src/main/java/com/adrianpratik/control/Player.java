@@ -1,10 +1,8 @@
 package com.adrianpratik.control;
 
 import com.adrianpratik.model.CardType;
-import com.adrianpratik.model.PlayerType;
 import com.adrianpratik.sprites.Card;
 
-import java.awt.geom.Point2D;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -27,7 +25,7 @@ public class Player {
 
     public void addCard(Card.Type type, int cardNumber, int cardPosition){
         System.out.println(cardNumber);
-        CardType cardPositions = MainWindow.cardsPositions.getPlayer().get(playerNumber).getCard().get(cardPosition);
+        CardType cardPositions = GameController.cardsPositions.getPlayer().get(playerNumber).getCard().get(cardPosition);
         Card tmp = new Card(cardPositions.getX(), cardPositions.getY(), type, cardNumber, cardPosition);
         tmp.setHide(true);
         cardList.add(tmp);

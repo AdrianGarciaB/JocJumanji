@@ -1,10 +1,7 @@
 package com.adrianpratik.sprites;
 
-import com.adrianpratik.control.MainWindow;
-import javafx.scene.SnapshotParameters;
+import com.adrianpratik.control.GameController;
 import javafx.scene.image.Image;
-import javafx.scene.image.ImageView;
-import javafx.scene.paint.Color;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -24,7 +21,7 @@ public class Table {
     }
 
     public void draw(){
-        MainWindow.getGraphicsContext().drawImage(tableSprite, 0,0, MainWindow.width, MainWindow.height);
+        GameController.getGraphicsContext().drawImage(tableSprite, 0,0, GameController.width, GameController.height);
     }
 
 
