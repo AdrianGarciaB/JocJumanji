@@ -1,6 +1,7 @@
 package com.adrianpratik.control;
 
 import com.adrianpratik.model.CardsPositionType;
+import com.adrianpratik.model.DeckType;
 import com.adrianpratik.sprites.Card;
 import com.adrianpratik.sprites.MainMenu;
 import com.adrianpratik.sprites.Table;
@@ -29,7 +30,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.ResourceBundle;
 
-public class GameController implements Initializable, EventHandler<MouseEvent> {
+public class GameWindow implements Initializable, EventHandler<MouseEvent> {
     public static final double baseWidth = 1920;
     public static final double baseHeight = 1080;
     public static final String imageURI = "images/";
@@ -48,10 +49,11 @@ public class GameController implements Initializable, EventHandler<MouseEvent> {
     private MediaPlayer mediaPlayerClick;
     private MediaPlayer repartPlayer;
     private List<Player> playerList;
+    private Card cardDeck;
     private Card cardSelected;
     private Deck decks;
     private Image gameInfoImage;
-    private ClientTCP clientTCP;
+    private GameClient gameClient;
 
     @FXML
     Canvas mainCanvas;
@@ -67,12 +69,13 @@ public class GameController implements Initializable, EventHandler<MouseEvent> {
             else {
                 table.draw();
                 playerList.forEach(Player::drawCards);
+                cardDeck.draw();
 
                 if (cardSelected != null) {
                     cardSelected.draw(mouseX - ((Card.cardWidthSize*diferenceWidth) / 2f), mouseY - ((Card.cardHeightSize*diferenceHeight) / 2f));
                 }
                 decks.drawDiscardDeck();
-                GameController.getGraphicsContext().drawImage(signImageGame, 560*diferenceWidth, 25*diferenceHeight, 820*diferenceWidth, 120*diferenceHeight);
+                GameWindow.getGraphicsContext().drawImage(signImageGame, 560*diferenceWidth, 25*diferenceHeight, 820*diferenceWidth, 120*diferenceHeight);
             }
         }
     })
@@ -90,7 +93,9 @@ public class GameController implements Initializable, EventHandler<MouseEvent> {
         table = new Table("images/table.png");
         playerList = new ArrayList<>();
         decks = new Deck();
-        signImageGame = new Image(GameController.imageURI + "sign.png");
+        signImageGame = new Image(GameWindow.imageURI + "sign.png");
+        cardDeck = new Card((int) Deck.getMainDeckPoints().getX(), (int) Deck.getMainDeckPoints().getY(), Card.getRandomType(), 1,1);
+        cardDeck.setFlipped(true);
     }
 
     public void setScene(Scene sc) {
@@ -108,14 +113,14 @@ public class GameController implements Initializable, EventHandler<MouseEvent> {
 
     public void setWidth(double width) {
         mainCanvas.setWidth(width);
-        GameController.width = width;
-        GameController.diferenceWidth = width / baseWidth;
+        GameWindow.width = width;
+        GameWindow.diferenceWidth = width / baseWidth;
     }
 
     public void setHeight(double height) {
         mainCanvas.setHeight(height);
-        GameController.height = height;
-        GameController.diferenceHeight = height / baseHeight;
+        GameWindow.height = height;
+        GameWindow.diferenceHeight = height / baseHeight;
     }
 
     public void start() {
@@ -140,13 +145,12 @@ public class GameController implements Initializable, EventHandler<MouseEvent> {
 
         if (isInMenu && mainMenu.isConnecting() == false){
             if (mainMenu.playButtonClicked(point)) {
-                clientTCP = new ClientTCP(this);
+                gameClient = new GameClient(this);
                 mainMenu.setConnecting(true);
-                clientTCP.start();
+                gameClient.start();
             }
             else if (mainMenu.exitButtonClicked(point)){
                 Platform.exit();
-                System.exit(0);
             }
         }
         else if(!isInMenu){
@@ -177,6 +181,7 @@ public class GameController implements Initializable, EventHandler<MouseEvent> {
             });
         }
     }
+
 
     public MainMenu getMainMenu() {
         return mainMenu;

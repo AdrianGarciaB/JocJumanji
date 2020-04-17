@@ -1,6 +1,6 @@
 package com.adrianpratik;
 
-import com.adrianpratik.control.GameController;
+import com.adrianpratik.control.GameWindow;
 import com.adrianpratik.sprites.Music;
 import javafx.application.Application;
 import javafx.beans.InvalidationListener;
@@ -33,7 +33,7 @@ public class Main extends Application {
         // Musica del inicio
 
 
-        GameController window = loader.getController();
+        GameWindow window = loader.getController();
         window.setScene(sc);
         window.setWidth(sc.getWidth());
         window.setHeight(sc.getHeight());
@@ -56,6 +56,12 @@ public class Main extends Application {
         primaryStage.setScene(sc);
         primaryStage.setTitle("Jumanji :)");
         primaryStage.show();
+    }
 
+    @Override
+    public void stop(){
+        System.out.println("Test");
+        System.exit(0);
+        // Save file
     }
 }

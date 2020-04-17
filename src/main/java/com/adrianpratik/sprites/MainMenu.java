@@ -1,6 +1,6 @@
 package com.adrianpratik.sprites;
 
-import com.adrianpratik.control.GameController;
+import com.adrianpratik.control.GameWindow;
 import javafx.beans.property.BooleanProperty;
 import javafx.beans.property.SimpleBooleanProperty;
 import javafx.geometry.Point2D;
@@ -23,7 +23,7 @@ public class MainMenu {
     public MainMenu() {
 
         // Imagen de fondo
-        backgroundImage = new ImageView(GameController.imageURI + "menu_background.png");
+        backgroundImage = new ImageView(GameWindow.imageURI + "menu_background.png");
 
         // Titulo del juego
         titleGame = new ImageView("images/logo.png");
@@ -59,20 +59,20 @@ public class MainMenu {
     }
 
     public void draw() {
-        GameController.getGraphicsContext().drawImage(backgroundImage.getImage(), 0, 0, GameController.width, GameController.height);
+        GameWindow.getGraphicsContext().drawImage(backgroundImage.getImage(), 0, 0, GameWindow.width, GameWindow.height);
 
         //Titulo del juego
-        GameController.getGraphicsContext().drawImage(titleGame.getImage(), 600* GameController.diferenceWidth, 50* GameController.diferenceHeight, 700* GameController.diferenceWidth, 400* GameController.diferenceHeight);
+        GameWindow.getGraphicsContext().drawImage(titleGame.getImage(), 600* GameWindow.diferenceWidth, 50* GameWindow.diferenceHeight, 700* GameWindow.diferenceWidth, 400* GameWindow.diferenceHeight);
 
         if (!connecting) {
             // Boton jugar
-            GameController.getGraphicsContext().drawImage(play.getImage(), 866.5 * GameController.diferenceWidth, 500 * GameController.diferenceHeight, 169 * GameController.diferenceWidth, 60 * GameController.diferenceHeight);
+            GameWindow.getGraphicsContext().drawImage(play.getImage(), 866.5 * GameWindow.diferenceWidth, 500 * GameWindow.diferenceHeight, 169 * GameWindow.diferenceWidth, 60 * GameWindow.diferenceHeight);
 
             // Boton exit
-            GameController.getGraphicsContext().drawImage(exit.getImage(), 866.5 * GameController.diferenceWidth, 600 * GameController.diferenceHeight, 169 * GameController.diferenceWidth, 60 * GameController.diferenceHeight);
+            GameWindow.getGraphicsContext().drawImage(exit.getImage(), 866.5 * GameWindow.diferenceWidth, 600 * GameWindow.diferenceHeight, 169 * GameWindow.diferenceWidth, 60 * GameWindow.diferenceHeight);
         }
         else if (connecting){
-            GameController.getGraphicsContext().drawImage(conectionStatus, 560*GameController.diferenceWidth, 400*GameController.diferenceHeight, 820*GameController.diferenceWidth, 120*GameController.diferenceHeight);
+            GameWindow.getGraphicsContext().drawImage(conectionStatus, 560* GameWindow.diferenceWidth, 400* GameWindow.diferenceHeight, 820* GameWindow.diferenceWidth, 120* GameWindow.diferenceHeight);
         }
 
     }
@@ -83,7 +83,7 @@ public class MainMenu {
     }
 
     public static Rectangle2D getPlayBoundary() {
-        return new Rectangle2D(900* GameController.diferenceWidth, 500* GameController.diferenceHeight, 102* GameController.diferenceWidth, 60* GameController.diferenceHeight);
+        return new Rectangle2D(900* GameWindow.diferenceWidth, 500* GameWindow.diferenceHeight, 102* GameWindow.diferenceWidth, 60* GameWindow.diferenceHeight);
     }
 
     public boolean exitButtonClicked(Point2D p) {
@@ -91,7 +91,7 @@ public class MainMenu {
     }
 
     public static Rectangle2D getExitBoundary() {
-        return new Rectangle2D(900* GameController.diferenceWidth, 600* GameController.diferenceHeight, 102* GameController.diferenceWidth, 60* GameController.diferenceHeight);
+        return new Rectangle2D(900* GameWindow.diferenceWidth, 600* GameWindow.diferenceHeight, 102* GameWindow.diferenceWidth, 60* GameWindow.diferenceHeight);
     }
 
     public void setConnecting(boolean connecting) {

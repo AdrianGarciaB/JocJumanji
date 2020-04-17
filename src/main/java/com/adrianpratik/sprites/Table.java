@@ -1,6 +1,6 @@
 package com.adrianpratik.sprites;
 
-import com.adrianpratik.control.GameController;
+import com.adrianpratik.control.GameWindow;
 import javafx.scene.image.Image;
 
 import java.util.ArrayList;
@@ -21,7 +21,7 @@ public class Table {
     }
 
     public void draw(){
-        GameController.getGraphicsContext().drawImage(tableSprite, 0,0, GameController.width, GameController.height);
+        GameWindow.getGraphicsContext().drawImage(tableSprite, 0,0, GameWindow.width, GameWindow.height);
     }
 
 

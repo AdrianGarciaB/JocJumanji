@@ -25,7 +25,7 @@ public class Player {
 
     public void addCard(Card.Type type, int cardNumber, int cardPosition){
         System.out.println(cardNumber);
-        CardType cardPositions = GameController.cardsPositions.getPlayer().get(playerNumber).getCard().get(cardPosition);
+        CardType cardPositions = GameWindow.cardsPositions.getPlayer().get(playerNumber).getCard().get(cardPosition);
         Card tmp = new Card(cardPositions.getX(), cardPositions.getY(), type, cardNumber, cardPosition);
         tmp.setHide(true);
         cardList.add(tmp);

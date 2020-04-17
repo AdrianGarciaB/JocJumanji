@@ -17,8 +17,8 @@ public class Deck {
 
     public Deck(){
         mainDeck = new ArrayList<>();
-        DeckType tmp = GameController.cardsPositions.getDeck();
-        DiscardDeckType tmp2 = GameController.cardsPositions.getDiscardDeck();
+        DeckType tmp = GameWindow.cardsPositions.getDeck();
+        DiscardDeckType tmp2 = GameWindow.cardsPositions.getDiscardDeck();
         mainDeckPoints = new Point2D(tmp.getX(), tmp.getY());
         discardDeckPoints = new Point2D(tmp2.getX(), tmp2.getY());
     }
@@ -46,7 +46,7 @@ public class Deck {
     }
 
     public Rectangle2D getDiscardCardBoundary() {
-        return new Rectangle2D(discardDeckPoints.getX()* GameController.diferenceWidth, discardDeckPoints.getY()* GameController.diferenceHeight, Card.cardWidthSize* GameController.diferenceWidth, Card.cardHeightSize* GameController.diferenceHeight);
+        return new Rectangle2D(discardDeckPoints.getX()* GameWindow.diferenceWidth, discardDeckPoints.getY()* GameWindow.diferenceHeight, Card.cardWidthSize* GameWindow.diferenceWidth, Card.cardHeightSize* GameWindow.diferenceHeight);
     }
 
     public void discardCard(Card card){
@@ -60,4 +60,6 @@ public class Deck {
     public boolean equalsCardValue(Card card){
         return card.getCardNumber() == lastDiscartedCard.getCardNumber();
     }
+
+
 }
