@@ -24,7 +24,4 @@ public class Table {
         GameWindow.getGraphicsContext().drawImage(tableSprite, 0,0, GameWindow.width, GameWindow.height);
     }
 
-
-
-
 }
