@@ -24,10 +24,17 @@ public class Player {
     }
 
     public void addCard(Card.Type type, int cardNumber, int cardPosition){
-        System.out.println(cardNumber);
         CardType cardPositions = GameWindow.cardsPositions.getPlayer().get(playerNumber).getCard().get(cardPosition);
-        Card tmp = new Card(cardPositions.getX(), cardPositions.getY(), type, cardNumber, cardPosition);
-        tmp.setHide(true);
+        Card tmp = new Card(cardPositions.getX(), cardPositions.getY(), type, cardNumber, cardPosition, false);
+        tmp.setFlipped(true);
+        cardList.add(tmp);
+    }
+
+    public void addCard(Card card, int position, boolean flipped){
+        CardType cardPositions = GameWindow.cardsPositions.getPlayer().get(playerNumber).getCard().get(position);
+        Card tmp = new Card(cardPositions.getX(), cardPositions.getY(), card.getType(), card.getCardNumber(), position, true);
+        tmp.setHide(false);
+        tmp.setFlipped(flipped);
         cardList.add(tmp);
     }
 

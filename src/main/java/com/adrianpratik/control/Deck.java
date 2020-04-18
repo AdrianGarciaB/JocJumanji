@@ -50,7 +50,6 @@ public class Deck {
     }
 
     public void discardCard(Card card){
-        mainDeck.add(lastDiscartedCard);
         lastDiscartedCard = card;
         lastDiscartedCard.setX(discardDeckPoints.getX());
         lastDiscartedCard.setY(discardDeckPoints.getY());

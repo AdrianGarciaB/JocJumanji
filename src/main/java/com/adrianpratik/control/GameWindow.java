@@ -1,7 +1,7 @@
 package com.adrianpratik.control;
 
 import com.adrianpratik.model.CardsPositionType;
-import com.adrianpratik.model.DeckType;
+import com.adrianpratik.model.CardListResponse;
 import com.adrianpratik.sprites.Card;
 import com.adrianpratik.sprites.MainMenu;
 import com.adrianpratik.sprites.Table;
@@ -69,6 +69,7 @@ public class GameWindow implements Initializable, EventHandler<MouseEvent> {
             else {
                 table.draw();
                 playerList.forEach(Player::drawCards);
+
                 cardDeck.draw();
 
                 if (cardSelected != null) {
@@ -76,6 +77,9 @@ public class GameWindow implements Initializable, EventHandler<MouseEvent> {
                 }
                 decks.drawDiscardDeck();
                 GameWindow.getGraphicsContext().drawImage(signImageGame, 560*diferenceWidth, 25*diferenceHeight, 820*diferenceWidth, 120*diferenceHeight);
+                if (gameInfoImage != null ){
+                    GameWindow.getGraphicsContext().drawImage(gameInfoImage, 560*diferenceWidth, 25*diferenceHeight, 820*diferenceWidth, 120*diferenceHeight);
+                }
             }
         }
     })
@@ -94,7 +98,7 @@ public class GameWindow implements Initializable, EventHandler<MouseEvent> {
         playerList = new ArrayList<>();
         decks = new Deck();
         signImageGame = new Image(GameWindow.imageURI + "sign.png");
-        cardDeck = new Card((int) Deck.getMainDeckPoints().getX(), (int) Deck.getMainDeckPoints().getY(), Card.getRandomType(), 1,1);
+        cardDeck = new Card((int) Deck.getMainDeckPoints().getX(), (int) Deck.getMainDeckPoints().getY(), Card.getRandomType(), 1,1, true);
         cardDeck.setFlipped(true);
     }
 
@@ -182,8 +186,57 @@ public class GameWindow implements Initializable, EventHandler<MouseEvent> {
         }
     }
 
+    public List<Player> getPlayerList() {
+        return playerList;
+    }
+
+    public void setGameInfoImage(Image gameInfoImage) {
+        this.gameInfoImage = gameInfoImage;
+    }
 
     public MainMenu getMainMenu() {
         return mainMenu;
+    }
+
+    public void springCards(final Object data) {
+        final CardListResponse response = (CardListResponse) data;
+        new Thread(() -> {
+            if (response == null){
+                System.err.println("Response is Null");
+            }
+            else {
+                for (int i = 0; i < 2; i++) {
+                    Player tmp = new Player(i);
+                    playerList.add(tmp);
+                    if (i == 0) {
+                        for (int j = 0; j < 2; j++) {
+                            tmp.addCard(response.getCardList().get(j), j, false);
+                            repartSound();
+                        }
+                        for (int j = 2; j < 4; j++) {
+                            tmp.addCard(null, 0, j);
+                            repartSound();
+                        }
+                    }
+                    else {
+                        for (int j = 0; j < 4; j++) {
+                            tmp.addCard(null, 0, j);
+                            repartSound();
+
+                        }
+                    }
+
+                }
+            }
+        }).start();
+    }
+
+    private void repartSound() {
+        repartPlayer.stop();
+        repartPlayer.play();
+        try {
+            Thread.sleep(300);
+        } catch (InterruptedException ignore) {
+        }
     }
 }

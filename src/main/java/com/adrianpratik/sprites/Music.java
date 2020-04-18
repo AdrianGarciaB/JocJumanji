@@ -14,7 +14,7 @@ public class Music {
         Media songFondo = new Media(new File("src/main/resources/audio/musicaFondo.mp3").toURI().toString());
         mediaPlayerFondo = new MediaPlayer(songFondo);
         mediaPlayerFondo.setAutoPlay(true);
-        mediaPlayerFondo.setVolume(50);
+        mediaPlayerFondo.setVolume(0);
         mediaPlayerFondo.setCycleCount(MediaPlayer.INDEFINITE);
 
         return mediaPlayerFondo;

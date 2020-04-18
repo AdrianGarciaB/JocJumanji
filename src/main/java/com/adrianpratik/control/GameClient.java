@@ -17,6 +17,7 @@ public class GameClient extends Thread{
     public static final int port = 20200;
     boolean continueConnected = true;
     private GameWindow gameWindow;
+    private int playerId;
 
     public GameClient(GameWindow gameWindow) {
         this.gameWindow = gameWindow;
@@ -45,16 +46,20 @@ public class GameClient extends Thread{
                 //enviament el número i els intents
                 connectionResponse = (Packet) in.readObject();
                 switch (connectionResponse.responseCode){
+                    // Paquete para saber si estamos conectados.
                     case 100: {
                         out.writeObject(new Packet(100, null));
                         out.flush();
                         System.out.println("[PACKET] Alive send");
                         break;
                     }
+                    // Paquete de inicio de la partida.
                     case 101: {
                         System.out.println(connectionResponse.responseCode);
                         gameWindow.getMainMenu().setConnecting(false);
                         gameWindow.isInMenu = false;
+                        gameWindow.setGameInfoImage(new Image("images/spreadingCards.png"));
+                        gameWindow.springCards(connectionResponse.data);
                         break;
                     }
                 }

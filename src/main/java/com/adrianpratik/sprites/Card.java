@@ -7,7 +7,10 @@ import javafx.geometry.Point2D;
 import javafx.geometry.Rectangle2D;
 import javafx.scene.image.Image;
 
-public class Card{
+import java.io.Serializable;
+
+public class Card implements Serializable{
+    public static final long serialVersionUID = 1L;
     public static final int cardWidthSize = 43;
     public static final int cardHeightSize = 65;
     public static final Image cardFlipped = new Image(GameWindow.imageURI +"back.png");
@@ -20,14 +23,21 @@ public class Card{
     private boolean hide;
     private int cardPosition;
 
-    public Card(int x, int y, Type cardType, int cardNumber, int cardPosition){
+    public Card(int x, int y, Type cardType, int cardNumber, int cardPosition, boolean withSprite){
         type = cardType;
         this.x = x;
         this.y = y;
         this.cardNumber = cardNumber;
-        this.sprite = new Image(GameWindow.imageURI +cardNumber+"-"+type+".png");
+        if (withSprite) this.sprite = new Image(GameWindow.imageURI +cardNumber+"-"+type+".png");
         this.cardPosition = cardPosition;
         flipped = false;
+    }
+
+    public Card(int x, int y, int cardPosition){
+        this.x = x;
+        this.y = y;
+        this.cardPosition = cardPosition;
+        flipped = true;
     }
 
     public static Type getRandomType(){
@@ -41,7 +51,7 @@ public class Card{
         return null;
     }
 
-    public static Type getRandomTypeById(int typeId){
+    public static Type getTypeById(int typeId){
         switch (typeId){
             case 1: return Type.Club;
             case 2: return Type.Diamond;
@@ -138,6 +148,10 @@ public class Card{
 
     public void setFlipped(boolean flipped) {
         this.flipped = flipped;
+    }
+
+    public void setCardPosition(int cardPosition) {
+        this.cardPosition = cardPosition;
     }
 
     public void resetPositions(){
