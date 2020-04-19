@@ -54,6 +54,7 @@ public class GameWindow implements Initializable, EventHandler<MouseEvent> {
     private Deck decks;
     private Image gameInfoImage;
     private GameClient gameClient;
+    public boolean isMyTurn;
 
     @FXML
     Canvas mainCanvas;
@@ -238,5 +239,9 @@ public class GameWindow implements Initializable, EventHandler<MouseEvent> {
             Thread.sleep(300);
         } catch (InterruptedException ignore) {
         }
+    }
+
+    public Deck getDecks() {
+        return decks;
     }
 }
