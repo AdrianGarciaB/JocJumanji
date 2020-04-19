@@ -1,6 +1,7 @@
 package com.adrianpratik.control;
 
 import com.adrianpratik.model.Packet;
+import com.adrianpratik.sprites.Card;
 import javafx.application.Platform;
 import javafx.scene.image.Image;
 
@@ -60,6 +61,21 @@ public class GameClient extends Thread{
                         gameWindow.isInMenu = false;
                         gameWindow.setGameInfoImage(new Image("images/spreadingCards.png"));
                         gameWindow.springCards(connectionResponse.data);
+                        gameWindow.setGameInfoImage(null);
+                        out.writeObject(new Packet(102, null));
+                        out.flush();
+                        break;
+                    }
+                    case 102: {
+                        Card card = (Card) connectionResponse.data;
+                        System.out.println(card.getCardNumber());
+                        gameWindow.getDecks().discardCard(card);
+                        break;
+                    }
+                    case 103: {
+                        if ((int) connectionResponse.data == playerId) {
+                            gameWindow.isMyTurn = true;
+                        }
                         break;
                     }
                 }

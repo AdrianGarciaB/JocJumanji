@@ -54,6 +54,9 @@ public class Deck {
         lastDiscartedCard.setX(discardDeckPoints.getX());
         lastDiscartedCard.setY(discardDeckPoints.getY());
         lastDiscartedCard.setHide(false);
+        System.out.println(discardDeckPoints.getX()+":"+discardDeckPoints.getY());
+        System.out.println(card.isHide() + ":" + card.isFlipped());
+
     }
 
     public boolean equalsCardValue(Card card){
