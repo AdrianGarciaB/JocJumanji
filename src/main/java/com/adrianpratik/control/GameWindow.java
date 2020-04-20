@@ -47,7 +47,7 @@ public class GameWindow implements Initializable, EventHandler<MouseEvent> {
     private Table table;
     private Image signImageGame;
     private MediaPlayer mediaPlayerClick;
-    private MediaPlayer repartPlayer;
+    MediaPlayer repartPlayer;
     private List<Player> playerList;
     private Card cardDeck;
     private Card cardSelected;
@@ -55,6 +55,7 @@ public class GameWindow implements Initializable, EventHandler<MouseEvent> {
     private Image gameInfoImage;
     private GameClient gameClient;
     public boolean isMyTurn;
+    public boolean cardRequested;
 
     @FXML
     Canvas mainCanvas;
@@ -72,14 +73,13 @@ public class GameWindow implements Initializable, EventHandler<MouseEvent> {
                 playerList.forEach(Player::drawCards);
 
                 cardDeck.draw();
-
-                if (cardSelected != null) {
-                    cardSelected.draw(mouseX - ((Card.cardWidthSize*diferenceWidth) / 2f), mouseY - ((Card.cardHeightSize*diferenceHeight) / 2f));
-                }
                 decks.drawDiscardDeck();
                 GameWindow.getGraphicsContext().drawImage(signImageGame, 560*diferenceWidth, 25*diferenceHeight, 820*diferenceWidth, 120*diferenceHeight);
                 if (gameInfoImage != null ){
                     GameWindow.getGraphicsContext().drawImage(gameInfoImage, 560*diferenceWidth, 25*diferenceHeight, 820*diferenceWidth, 120*diferenceHeight);
+                }
+                if (cardSelected != null) {
+                    cardSelected.draw(mouseX - ((Card.cardWidthSize*diferenceWidth) / 2f), mouseY - ((Card.cardHeightSize*diferenceHeight) / 2f));
                 }
             }
         }
@@ -159,29 +159,31 @@ public class GameWindow implements Initializable, EventHandler<MouseEvent> {
             }
         }
         else if(!isInMenu){
-            playerList.get(0).getCardList().forEach(card -> {
-                if (decks.isDiscardDeckClicked(point) && cardSelected != null){
-                    if (decks.equalsCardValue(cardSelected)) {
-                        System.out.println("OK");
-                    }
-                    else System.out.println("FALLO");
+            if (decks.isMainDeckClicked(point) && isMyTurn && !cardRequested){
+                gameClient.requestCard();
+                cardRequested = true;
+            }
+            if (decks.isDiscardDeckClicked(point) && cardSelected != null && cardRequested){
+                cardRequested = false;
+                gameClient.nextTurn(cardSelected);
+                cardSelected = null;
+            }
 
-                    decks.discardCard(cardSelected);
+            playerList.get(0).getCardList().forEach(card -> {
+                if (cardSelected != null && card.isCardClicked(point) && cardRequested) {
+                    cardRequested = false;
+                    cardSelected.setX(card.getX());
+                    cardSelected.setY(card.getY());
+                    cardSelected.setCardPosition(card.getCardPosition());
+                    gameClient.nextTurn(card);
+                    playerList.get(0).getCardList().set(cardSelected.getCardPosition(), cardSelected);
                     cardSelected = null;
                 }
                 else if (card.isCardClicked(point)) {
-                    System.out.println("test");
-                    if (cardSelected != null){
-                        cardSelected.setHide(false);
-
-                        // Caso para dejar la carta donde estaba al principio
-                        if (card.getCardPosition() == cardSelected.getCardPosition()) {
-                            cardSelected = null;
-                            return;
-                        }
+                    if (decks.equalsCardValue(card)) {
+                        gameClient.discardCard(card);
                     }
-                    cardSelected = card;
-                    card.setHide(true);
+                    else randomCards(0);
                 }
             });
         }
@@ -199,6 +201,25 @@ public class GameWindow implements Initializable, EventHandler<MouseEvent> {
         return mainMenu;
     }
 
+    //TODO Notificar a todos los clientes del random.
+    public void randomCards(int playerId){
+        new Thread(() -> {
+                    playerList.set(playerId, null);
+                    Player tmp = new Player(playerId);
+                    playerList.add(playerId, tmp);
+                    for (int j = 0; j < 4; j++) {
+                        try {
+                            Thread.sleep(500);
+                            tmp.addCard(Card.getRandomType(), (int) (Math.random() * 13) +1, j);
+                            repartSound();
+                        } catch (InterruptedException e) {
+                            e.printStackTrace();
+                        }
+
+                    }
+        }).start();
+    }
+
     public void springCards(final Object data) {
         final CardListResponse response = (CardListResponse) data;
         new Thread(() -> {
@@ -210,12 +231,9 @@ public class GameWindow implements Initializable, EventHandler<MouseEvent> {
                     Player tmp = new Player(i);
                     playerList.add(tmp);
                     if (i == 0) {
-                        for (int j = 0; j < 2; j++) {
-                            tmp.addCard(response.getCardList().get(j), j, false);
-                            repartSound();
-                        }
-                        for (int j = 2; j < 4; j++) {
-                            tmp.addCard(null, 0, j);
+                        for (int j = 0; j < 4; j++) {
+                            // Cuando J sea mayor o igual a 2, la carta no estara al descubierto.
+                            tmp.addCard(response.getCardList().get(j), j, j>=2);
                             repartSound();
                         }
                     }
@@ -223,10 +241,8 @@ public class GameWindow implements Initializable, EventHandler<MouseEvent> {
                         for (int j = 0; j < 4; j++) {
                             tmp.addCard(null, 0, j);
                             repartSound();
-
                         }
                     }
-
                 }
             }
         }).start();
@@ -243,5 +259,10 @@ public class GameWindow implements Initializable, EventHandler<MouseEvent> {
 
     public Deck getDecks() {
         return decks;
+    }
+
+    public void setCardSelected(Card cardSelected) {
+        cardSelected.generateSprite();
+        this.cardSelected = cardSelected;
     }
 }
