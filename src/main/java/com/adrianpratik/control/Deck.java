@@ -49,6 +49,14 @@ public class Deck {
         return new Rectangle2D(discardDeckPoints.getX()* GameWindow.diferenceWidth, discardDeckPoints.getY()* GameWindow.diferenceHeight, Card.cardWidthSize* GameWindow.diferenceWidth, Card.cardHeightSize* GameWindow.diferenceHeight);
     }
 
+    public boolean isMainDeckClicked(Point2D p){
+        return getMainDeckBoundary().contains(p);
+    }
+
+    public Rectangle2D getMainDeckBoundary() {
+        return new Rectangle2D(mainDeckPoints.getX()* GameWindow.diferenceWidth, mainDeckPoints.getY()* GameWindow.diferenceHeight, Card.cardWidthSize* GameWindow.diferenceWidth, Card.cardHeightSize* GameWindow.diferenceHeight);
+    }
+
     public void discardCard(Card card){
         lastDiscartedCard = card;
         lastDiscartedCard.setX(discardDeckPoints.getX());
@@ -63,5 +71,7 @@ public class Deck {
         return card.getCardNumber() == lastDiscartedCard.getCardNumber();
     }
 
-
+    public Card getLastDiscartedCard() {
+        return lastDiscartedCard;
+    }
 }

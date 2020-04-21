@@ -28,7 +28,7 @@ public class Card implements Serializable{
         this.x = x;
         this.y = y;
         this.cardNumber = cardNumber;
-        if (withSprite) this.sprite = new Image(GameWindow.imageURI +cardNumber+"-"+type+".png");
+        if (withSprite) generateSprite();
         this.cardPosition = cardPosition;
         flipped = false;
     }
@@ -157,6 +157,15 @@ public class Card implements Serializable{
     public void resetPositions(){
         x = -100;
         y = -100;
+    }
+
+    public void generateSprite(){
+        try {
+            this.sprite = new Image(GameWindow.imageURI +cardNumber+"-"+type+".png");
+        }
+        catch (IllegalArgumentException e){
+            System.err.println(cardNumber + ":" + type);
+        }
     }
 
 
