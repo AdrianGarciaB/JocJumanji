@@ -47,6 +47,8 @@ public class GameWindow implements Initializable, EventHandler<MouseEvent> {
     private Table table;
     private Image signImageGame;
     private MediaPlayer mediaPlayerClick;
+    private MediaPlayer mediaPlayerLost;
+    private MediaPlayer mediaPlayerWin;
     MediaPlayer repartPlayer;
     private List<Player> playerList;
     private Card cardDeck;
@@ -56,6 +58,9 @@ public class GameWindow implements Initializable, EventHandler<MouseEvent> {
     private GameClient gameClient;
     public boolean isMyTurn;
     public boolean cardRequested;
+    int cardCount;
+    boolean gameLost;
+    boolean gameWin;
 
     @FXML
     Canvas mainCanvas;
@@ -89,9 +94,14 @@ public class GameWindow implements Initializable, EventHandler<MouseEvent> {
     @Override
     public void initialize(URL location, ResourceBundle resources) {
         mediaPlayerClick = new MediaPlayer(new Media(new File("src/main/resources/audio/click.mp3").toURI().toString()));
+        mediaPlayerLost = new MediaPlayer(new Media(new File("src/main/resources/audio/Game_Over.mp3").toURI().toString()));
+        mediaPlayerWin = new MediaPlayer(new Media(new File("src/main/resources/audio/Winner.mp3").toURI().toString()));
+
         repartPlayer = new MediaPlayer(new Media(new File("src/main/resources/audio/type.mp3").toURI().toString()));
         repartPlayer.setVolume(100);
         mediaPlayerClick.setVolume(100);
+        mediaPlayerLost.setVolume(100);
+        mediaPlayerWin.setVolume(100);
         gc = mainCanvas.getGraphicsContext2D();
         mainMenu = new MainMenu();
         timeline.setCycleCount(Timeline.INDEFINITE);
@@ -101,6 +111,7 @@ public class GameWindow implements Initializable, EventHandler<MouseEvent> {
         signImageGame = new Image(GameWindow.imageURI + "sign.png");
         cardDeck = new Card((int) Deck.getMainDeckPoints().getX(), (int) Deck.getMainDeckPoints().getY(), Card.getRandomType(), 1,1, true);
         cardDeck.setFlipped(true);
+        cardCount = 4;
     }
 
     public void setScene(Scene sc) {
@@ -175,6 +186,7 @@ public class GameWindow implements Initializable, EventHandler<MouseEvent> {
                     cardSelected.setX(card.getX());
                     cardSelected.setY(card.getY());
                     cardSelected.setCardPosition(card.getCardPosition());
+                    card.setFlipped(false);
                     gameClient.nextTurn(card);
                     playerList.get(0).getCardList().set(cardSelected.getCardPosition(), cardSelected);
                     cardSelected = null;
@@ -183,7 +195,7 @@ public class GameWindow implements Initializable, EventHandler<MouseEvent> {
                     if (decks.equalsCardValue(card)) {
                         gameClient.discardCard(card);
                     }
-                    else randomCards(0);
+                    else lostGame();
                 }
             });
         }
@@ -202,6 +214,7 @@ public class GameWindow implements Initializable, EventHandler<MouseEvent> {
     }
 
     //TODO Notificar a todos los clientes del random.
+    @Deprecated
     public void randomCards(int playerId){
         new Thread(() -> {
                     playerList.set(playerId, null);
@@ -218,6 +231,13 @@ public class GameWindow implements Initializable, EventHandler<MouseEvent> {
 
                     }
         }).start();
+    }
+
+    public void lostGame(){
+        playerList.set(0, null);
+        gameInfoImage = new Image("");
+        mediaPlayerLost.stop();
+        repartPlayer.play();
     }
 
     public void springCards(final Object data) {

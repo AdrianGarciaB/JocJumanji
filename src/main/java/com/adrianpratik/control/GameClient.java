@@ -14,7 +14,7 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 
 public class GameClient extends Thread{
-    public static final String hostname = "88.15.44.214";
+    public static final String hostname = "localhost";
     public static final int port = 20200;
     boolean continueConnected = true;
     private GameWindow gameWindow;
