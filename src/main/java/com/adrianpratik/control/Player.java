@@ -41,4 +41,12 @@ public class Player {
     public void drawCards(){
         cardList.forEach(Card::draw);
     }
+
+    public void clearCards() {
+        cardList = new ArrayList<>();
+    }
+
+    public void hideCard(int cardPosition){
+        getCardList().get(cardPosition).setHide(true);
+    }
 }

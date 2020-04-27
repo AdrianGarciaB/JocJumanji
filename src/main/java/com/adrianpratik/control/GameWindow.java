@@ -30,7 +30,6 @@ import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 import java.util.ResourceBundle;
-import java.util.concurrent.atomic.AtomicReference;
 
 public class GameWindow implements Initializable, EventHandler<MouseEvent> {
     public static final double baseWidth = 1920;
@@ -60,6 +59,7 @@ public class GameWindow implements Initializable, EventHandler<MouseEvent> {
     private GameClient gameClient;
     public boolean isMyTurn;
     public boolean cardRequested;
+    public boolean cardBlock;
     int cardCount;
     boolean gameLost;
     boolean gameWin;
@@ -173,6 +173,7 @@ public class GameWindow implements Initializable, EventHandler<MouseEvent> {
             }
         }
         else if(!isInMenu){
+            if (cardBlock) return;
             Iterator<Card> cardIterator = playerList.get(0).getCardList().iterator();
             if (decks.isMainDeckClicked(point) && isMyTurn && !cardRequested){
                 gameClient.requestCard();
@@ -201,26 +202,24 @@ public class GameWindow implements Initializable, EventHandler<MouseEvent> {
                         playerList.get(0).getCardList().set(card.getCardPosition(), cardSelected);
                         cardSelected = null;
                     } else if (card.isCardClicked(point) && cardSelected == null && !cardRequested) {
-                        if (decks.equalsCardValue(card)) {
                             gameClient.discardCard(card);
                             cardCount--;
                             card.discarted = true;
                             card.setHide(true);
                             removeCard[0] = true;
                             if (cardCount <= 0) winGame();
-                        } else lostGame();
+                            gameClient.notifyRemoveCard(card.getCardPosition());
+
                     }
                     count[0]++;
                 });
-                if (removeCard[0]) {
-                    //cardIterator.remove();
-                }
                 System.out.println("ARRAY SIZE: " + playerList.get(0).getCardList().size());
             }
         }
     }
 
     private void winGame() {
+        gameClient.checkWin();
         gameClient.continueConnected = false;
         gameInfoImage = new Image("images/win.png");
         mediaPlayerWin.stop();
@@ -260,11 +259,35 @@ public class GameWindow implements Initializable, EventHandler<MouseEvent> {
     }
 
     public void lostGame(){
-        gameClient.continueConnected = false;
-        gameInfoImage = new Image("images/lost.png");
         isMyTurn = false;
+        gameInfoImage = new Image("images/lost.png");
+        cardBlock = true;
+        playerList.get(0).getCardList().forEach(card -> card.setFlipped(false));
+        repartPlayer.stop();
+        repartPlayer.play();
         mediaPlayerLost.stop();
         mediaPlayerLost.play();
+    }
+
+    public void failedCard(){
+        cardBlock = true;
+        mediaPlayerLost.stop();
+        mediaPlayerLost.play();
+        gameClient.requestRandomCards();
+    }
+
+    public void randomCardsResponse(final Object data){
+        final CardListResponse response = (CardListResponse) data;
+        Player tmp = playerList.get(0);
+        tmp.clearCards();
+        new Thread(() -> {
+            for (int j = 0; j < 4; j++) {
+                // Cuando J sea mayor o igual a 2, la carta no estara al descubierto.
+                tmp.addCard(response.getCardList().get(j), j, true);
+                repartSound();
+            }
+            cardBlock = false;
+        }).start();
     }
 
     public void springCards(final Object data) {
@@ -274,7 +297,7 @@ public class GameWindow implements Initializable, EventHandler<MouseEvent> {
                 System.err.println("Response is Null");
             }
             else {
-                for (int i = 0; i < 2; i++) {
+                for (int i = 0; i < GameClient.numberOfPlayers; i++) {
                     Player tmp = new Player(i);
                     playerList.add(tmp);
                     if (i == 0) {

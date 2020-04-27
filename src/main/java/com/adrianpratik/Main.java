@@ -47,8 +47,7 @@ public class Main extends Application {
         sc.widthProperty().addListener(widthListener);
         sc.heightProperty().addListener(heightListener);
         window.start();
-
-
+        
         // Sonido de fondo
         Music sonido = new Music();
         sonido.playMusic();

@@ -1,5 +1,6 @@
 package com.adrianpratik.control;
 
+import com.adrianpratik.model.CardListResponse;
 import com.adrianpratik.model.Packet;
 import com.adrianpratik.sprites.Card;
 import javafx.application.Platform;
@@ -16,9 +17,11 @@ import java.util.logging.Logger;
 public class GameClient extends Thread{
     public static final String hostname = "localhost";
     public static final int port = 20200;
+    public static final int numberOfPlayers = 2;
     boolean continueConnected = true;
     private GameWindow gameWindow;
     private int playerId;
+
     ObjectOutputStream out;
 
 
@@ -92,6 +95,35 @@ public class GameClient extends Thread{
                         gameWindow.repartPlayer.play();
                         break;
                     }
+                    case 107: {
+                        gameWindow.randomCardsResponse(connectionResponse.data);
+                        break;
+                    }
+                    // Codigo que notifica la carta que debe ser borrada del rival. Aun no funcional.
+                    case 108: {
+                        int[] cardData = (int[]) connectionResponse.data;
+                        int playerIdTmp = cardData[0];
+                        int cardPosition = cardData[1];
+
+                        if (playerIdTmp != playerId){
+                            //gameWindow.getPlayerList().get(playerIdTmp-1).hideCard(cardPosition);
+                        }
+                        break;
+                    }
+                    case 112: {
+                        continueConnected = false;
+
+                        if (!gameWindow.gameWin) gameWindow.lostGame();
+                        new Thread(() -> {
+                            try {
+                                Thread.sleep(10000);
+                                gameWindow.isInMenu = true;
+                            } catch (InterruptedException e) {
+                                e.printStackTrace();
+                            }
+                        }).start();
+                        break;
+                    }
                 }
                 System.out.println(connectionResponse.responseCode);
 
@@ -153,6 +185,16 @@ public class GameClient extends Thread{
         }
     }
 
+    public void requestRandomCards() {
+        try {
+            System.out.println("Requesting card");
+            out.writeObject(new Packet(107, null));
+            out.flush();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
     public void nextTurn(Card cardSelected) {
         cardSelected.setSprite(null);
         try {
@@ -168,6 +210,24 @@ public class GameClient extends Thread{
         cardSelected.setSprite(null);
         try {
             out.writeObject(new Packet(106, cardSelected));
+            out.flush();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
+    public void notifyRemoveCard(int cardPosition) {
+        try {
+            out.writeObject(new Packet(108, new int[]{playerId, cardPosition}));
+            out.flush();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
+    public void checkWin() {
+        try {
+            out.writeObject(new Packet(112, null));
             out.flush();
         } catch (IOException e) {
             e.printStackTrace();
