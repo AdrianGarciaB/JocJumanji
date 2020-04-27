@@ -8,6 +8,7 @@ import javafx.geometry.Rectangle2D;
 import javafx.scene.image.Image;
 
 import java.io.Serializable;
+import java.util.Objects;
 
 public class Card implements Serializable{
     public static final long serialVersionUID = 1L;
@@ -22,6 +23,7 @@ public class Card implements Serializable{
     private boolean flipped;
     private boolean hide;
     private int cardPosition;
+    public boolean discarted;
 
     public Card(int x, int y, Type cardType, int cardNumber, int cardPosition, boolean withSprite){
         type = cardType;
@@ -74,7 +76,7 @@ public class Card implements Serializable{
 
     public boolean isCardClicked(Point2D p){
         if (x == Deck.getDiscardDeckPoints().getX() && y == Deck.getDiscardDeckPoints().getY()) return false;
-        return getCardBoundary().contains(p);
+        return getCardBoundary().contains(p) && !discarted;
     }
 
     public Rectangle2D getCardBoundary() {
@@ -168,5 +170,23 @@ public class Card implements Serializable{
         }
     }
 
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        Card card = (Card) o;
+        return cardNumber == card.cardNumber &&
+                Double.compare(card.x, x) == 0 &&
+                Double.compare(card.y, y) == 0 &&
+                flipped == card.flipped &&
+                hide == card.hide &&
+                cardPosition == card.cardPosition &&
+                type == card.type &&
+                Objects.equals(sprite, card.sprite);
+    }
 
+    @Override
+    public int hashCode() {
+        return Objects.hash(type, cardNumber, x, y, sprite, flipped, hide, cardPosition);
+    }
 }

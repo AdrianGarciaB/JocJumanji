@@ -27,8 +27,10 @@ import javax.xml.bind.JAXB;
 import java.io.File;
 import java.net.URL;
 import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.List;
 import java.util.ResourceBundle;
+import java.util.concurrent.atomic.AtomicReference;
 
 public class GameWindow implements Initializable, EventHandler<MouseEvent> {
     public static final double baseWidth = 1920;
@@ -158,6 +160,7 @@ public class GameWindow implements Initializable, EventHandler<MouseEvent> {
         Point2D point = new Point2D(mouseEvent.getX(),mouseEvent.getY());
         mediaPlayerClick.stop();
         mediaPlayerClick.play();
+        final boolean[] removeCard = new boolean[1];
 
         if (isInMenu && mainMenu.isConnecting() == false){
             if (mainMenu.playButtonClicked(point)) {
@@ -170,35 +173,58 @@ public class GameWindow implements Initializable, EventHandler<MouseEvent> {
             }
         }
         else if(!isInMenu){
+            Iterator<Card> cardIterator = playerList.get(0).getCardList().iterator();
             if (decks.isMainDeckClicked(point) && isMyTurn && !cardRequested){
                 gameClient.requestCard();
                 cardRequested = true;
             }
-            if (decks.isDiscardDeckClicked(point) && cardSelected != null && cardRequested){
+            else if (decks.isDiscardDeckClicked(point) && cardSelected != null && cardRequested){
                 cardRequested = false;
                 gameClient.nextTurn(cardSelected);
                 cardSelected = null;
             }
-
-            playerList.get(0).getCardList().forEach(card -> {
-                if (cardSelected != null && card.isCardClicked(point) && cardRequested) {
-                    cardRequested = false;
-                    cardSelected.setX(card.getX());
-                    cardSelected.setY(card.getY());
-                    cardSelected.setCardPosition(card.getCardPosition());
-                    card.setFlipped(false);
-                    gameClient.nextTurn(card);
-                    playerList.get(0).getCardList().set(cardSelected.getCardPosition(), cardSelected);
-                    cardSelected = null;
-                }
-                else if (card.isCardClicked(point)) {
-                    if (decks.equalsCardValue(card)) {
-                        gameClient.discardCard(card);
+            else {
+                final int[] count = {1};
+                playerList.get(0).getCardList().forEach(card -> {
+                    if (removeCard[0]) return;
+                    cardIterator.next();
+                    System.out.println(count[0]);
+                    if (cardSelected != null && card.isCardClicked(point)) {
+                        cardRequested = false;
+                        cardSelected.setX(card.getX());
+                        cardSelected.setY(card.getY());
+                        cardSelected.setCardPosition(card.getCardPosition());
+                        cardSelected.setFlipped(true);
+                        card.setFlipped(false);
+                        gameClient.nextTurn(card);
+                        cardSelected.setHide(false);
+                        playerList.get(0).getCardList().set(card.getCardPosition(), cardSelected);
+                        cardSelected = null;
+                    } else if (card.isCardClicked(point) && cardSelected == null && !cardRequested) {
+                        if (decks.equalsCardValue(card)) {
+                            gameClient.discardCard(card);
+                            cardCount--;
+                            card.discarted = true;
+                            card.setHide(true);
+                            removeCard[0] = true;
+                            if (cardCount <= 0) winGame();
+                        } else lostGame();
                     }
-                    else lostGame();
+                    count[0]++;
+                });
+                if (removeCard[0]) {
+                    //cardIterator.remove();
                 }
-            });
+                System.out.println("ARRAY SIZE: " + playerList.get(0).getCardList().size());
+            }
         }
+    }
+
+    private void winGame() {
+        gameClient.continueConnected = false;
+        gameInfoImage = new Image("images/win.png");
+        mediaPlayerWin.stop();
+        mediaPlayerWin.play();
     }
 
     public List<Player> getPlayerList() {
@@ -234,10 +260,11 @@ public class GameWindow implements Initializable, EventHandler<MouseEvent> {
     }
 
     public void lostGame(){
-        playerList.set(0, null);
-        gameInfoImage = new Image("");
+        gameClient.continueConnected = false;
+        gameInfoImage = new Image("images/lost.png");
+        isMyTurn = false;
         mediaPlayerLost.stop();
-        repartPlayer.play();
+        mediaPlayerLost.play();
     }
 
     public void springCards(final Object data) {
