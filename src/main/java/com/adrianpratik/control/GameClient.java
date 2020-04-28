@@ -90,6 +90,7 @@ public class GameClient extends Thread{
                     }
                     case 104: {
                         Card cardRobbed = (Card) connectionResponse.data;
+                        cardRobbed.setFlipped(false);
                         gameWindow.setCardSelected(cardRobbed);
                         gameWindow.repartPlayer.stop();
                         gameWindow.repartPlayer.play();

@@ -202,6 +202,7 @@ public class GameWindow implements Initializable, EventHandler<MouseEvent> {
                         playerList.get(0).getCardList().set(card.getCardPosition(), cardSelected);
                         cardSelected = null;
                     } else if (card.isCardClicked(point) && cardSelected == null && !cardRequested) {
+                        if (decks.equalsCardValue(card)) {
                             gameClient.discardCard(card);
                             cardCount--;
                             card.discarted = true;
@@ -209,7 +210,7 @@ public class GameWindow implements Initializable, EventHandler<MouseEvent> {
                             removeCard[0] = true;
                             if (cardCount <= 0) winGame();
                             gameClient.notifyRemoveCard(card.getCardPosition());
-
+                        } else failedCard();
                     }
                     count[0]++;
                 });
