@@ -272,6 +272,7 @@ public class GameWindow implements Initializable, EventHandler<MouseEvent> {
 
     public void failedCard(){
         cardBlock = true;
+        cardCount = 4;
         mediaPlayerLost.stop();
         mediaPlayerLost.play();
         gameClient.requestRandomCards();
